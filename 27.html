@@ -1,0 +1,1225 @@
+<html>
+<head>
+  <title>27</title>
+
+  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    
+	<link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.min.css">  
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/bootstrap-slider.min.js"></script>
+
+	<link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+	<script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+	<style>
+    #wraper{
+      text-align: center;
+      display:inline-block;
+    }
+	body {
+      padding: 0;
+      margin: 0;
+    }
+    html, body{
+      height: 100%;
+      width: 100%;
+    }
+
+	#map{
+		height: 60%;
+		width: 100%;
+	}
+	
+    #ex1Slider .slider-selection {
+            background: #BABABA;
+    }
+	#headerContainer{
+		position: absolute;
+		top:0%;
+		left:5%;
+		z-index:800;
+		background:none;
+		
+		font: 400 100px/1.3 'Lobster Two', Helvetica, sans-serif;
+		color: white;
+	}	
+
+	#headerContainer h3{
+		background-color: black;
+		padding:5px;
+	}
+
+	#infoBox{
+		font-family: sans-serif;
+		position:absolute;
+		z-index:800;
+		height:40%;
+		width:100%;
+		top: 60%;
+		left:0;
+		background:white;		
+	}
+	#menuBar{
+		height:31px;
+		width:100%;
+		background-color: black;
+		color: white;
+		
+		display:inline-block;
+	}
+	
+	#menuBar label:hover {
+		color: #ffd700;	
+		cursor: pointer;
+	}
+	
+	.button {
+		background-color: #000;
+		border: none;
+		color: white;
+		font-weight: bold;
+		padding: 5px 5px 5px 5px;
+		text-align: center;
+		font-size: 15px;
+		margin: 0px 18px;
+		cursor: pointer;
+	}
+	.button:hover {
+		color: #ffd700;
+	}
+	
+	.floatLeft{
+		float: left;
+		padding: 5px 5px 5px 5px;		
+	}
+	.axis{
+	    font: 10px sans-serif;
+	}
+    .axis path, .axis line {
+	           fill: none;
+	           stroke: #000;
+	           shape-rendering: crispEdges;
+	}
+/* 	 this enables mouse-over event even if eds are covered by  county layer */
+	.leaflet-zoom-animated{
+		pointer-events: none;
+	}
+							
+	#container{
+		background-color: #ffe5e5;
+	}
+/* 	 toolpit for dounat chart */
+	#container {
+		background-color: white;
+		position: absolute;
+		width: auto;
+		height: auto;
+		padding: 10px;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+		-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		pointer-events: none;
+		
+		top: 20%;
+		right: 2%;	
+	}
+			
+	#container.hidden {
+		display: none;
+	}
+			
+	#container p {
+		margin: 0;
+		font-family: sans-serif;
+		font-size: 12px;
+		line-height: 16px;
+	}
+  
+	#tooltip-line p{
+		padding-left: 18px;
+		font-size: 65%;
+	}
+	.tooltipSC {
+	
+		z-index:800;
+		position: absolute;
+		background-color: #ffffff;
+		padding: 10px;
+		width: auto;
+		height: auto;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+		-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		pointer-events: none;
+		
+		font-family: sans-serif;
+		font-size: 65%;
+		
+	}
+	.kropki{
+		cursor: pointer;
+	}
+	.bars{
+		cursor: pointer;
+	}
+	.checkbox, .radio {
+		margin: 0px 14px 0px 20px;
+	}
+	.modal-header, .modal-footer {
+	  background-color: #009b48;
+	  color: white;
+	}
+	.modal-footer {
+	  background-color: #ff7900;
+	  color: white;
+	}
+
+
+
+	
+  
+	</style>
+
+	
+
+	</head>
+	<body>
+	
+	<div id = "headerContainer">
+        <div class='row'>
+				<h3>
+					<img src="irelandFlag.png"  width="25" height="25" align="left" style = "margin-left: 5px">
+					<img src="polandFlag.png"  width="25" height="25" align="left" style = "margin-right: 10px"> 
+					Polish Population
+				</h3>
+        </div>
+	</div>
+	   <div id="map"></div>
+	   
+		<div id= "infoBox">
+			<div id = "menuBar">
+				<div class = "floatLeft">
+					<form class='radio'  autocomplete="off">
+						<label class='radio-inline'>
+							<input type="radio" name="gender" value="2006" onclick='initializeMap(this.value)'  checked><b> 2006</b>
+						</label>
+						<label class='radio-inline'>
+							<input type="radio" name="gender" value="2011" onclick='initializeMap(this.value)'><b> 2011</b>
+						</label>
+						<label class='radio-inline'>
+							<input type="radio" name="gender" value="2016" onclick='initializeMap(this.value)'><b> 2016</b>
+						</label>
+					</form>
+				</div>
+				<div class = "floatLeft">
+					<label><b>Opacity: </b></label><input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0.1" data-slider-max="1" data-slider-step="0.1" data-slider-value="10"/>
+				</div>
+					<button class="button" onclick="zoomHome()">Center Map</button>
+					<button class="button" data-toggle="modal" data-target="#modalTable">Table</button>
+			</div>
+			<div id = "charts-bottom">
+				<div id = "chartTotalPop" style="display: inline-block;"></div>
+				<div id = "chartScatterED" style="display: inline-block;"></div>
+			</div>
+		</div>
+		
+		<div id="container" class="hidden">
+			<div id="tooltip" style="display: inline-block;">
+				<p><span id="value1"></span></p>
+			</div>
+			<div id="tooltip-line" style="display: inline-block;">
+				<p><span id="value2"></span></p>
+			</div>
+		</div>
+	  
+	  
+		<!-- Modal -->
+		<div class="modal fade" id="modalTable" tabindex="-1" role="dialog" aria-labelledby="modalTableLabel">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modalTableLabel"><span id = "modalTableHeader"></span></h4>
+			  </div>
+			  <div class="modal-body">
+				<table id="modalTableInfo" class="hover row-border" style="width:100%; font: 12px sans-serif;">
+				<tbody>
+				</tbody>
+			  </table>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  
+	  
+	 <script>
+	 
+		//https://gist.github.com/zross/11186669	kildare_2016.json
+         
+        // ----------- total -- Population - Counties --------------------
+
+        var widthCountyChartSVG = 600,
+			heightCountyChartSVG = 205;
+        var marginCountyChart = {top: 5, right: 10, bottom: 48, left: 50};
+        var heightCountyChart = heightCountyChartSVG - marginCountyChart.top - marginCountyChart.bottom;     
+        var widthCountyChart = widthCountyChartSVG - marginCountyChart.right - marginCountyChart.left;
+        var xCountyChart = d3.scale.ordinal().rangeRoundBands([0, widthCountyChart], .05);
+        var yCountyChart = d3.scale.linear().range([heightCountyChart, 0]);
+        var xAxisCountyChart = d3.svg.axis()
+            .scale(xCountyChart)
+            .orient("bottom");
+
+        var yAxisCountyChart  = d3.svg.axis()
+            .scale(yCountyChart)
+            .orient("left")
+            .ticks(7);
+
+        var chartTotalPop = d3.select("#chartTotalPop").append("svg")
+            .attr("width", widthCountyChartSVG)
+            .attr("height", heightCountyChartSVG)
+          .append("g")
+            .attr("transform", 
+                  "translate(" + marginCountyChart.left + "," + marginCountyChart.top + ")");
+		
+		/* ------------------------ MAP ---------------------------------------------- */     
+         
+    var color = d3.scale.linear()
+      .domain([0,5,10,15,20,26])
+      .range(["white","#ffe6e6","#ff9999","#ff8080","#ff6666","#ff4d4d","#ff0000","#660000"]);
+         
+         
+	  // creates map with the basemap
+	var map = new L.Map("map", {center: [53.203936, -6.785920], zoom: 6});
+    // vars for basemaps
+    var OSMOrginal = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+    var OSMbANDw = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',{attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+    var topoESRI = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'}).addTo(map);
+    var satESRI = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'}); 
+    
+    // cereates Basemaps object   
+    var baseLayers = {
+      "OSM" : OSMOrginal,
+      "OSM B&W" : OSMbANDw,
+      "Topo ESRI" : topoESRI,
+      "Sat ESRI" : satESRI
+    };
+    
+    
+    
+    // create Overlays Object
+	var overlays = {};
+    
+    // svg used in the map probably the name will have to be changed tosuit the rest of the code
+	var svg = d3.select(map.getPanes().overlayPane).append("svg"),
+		g = svg.append("g").attr("class", "leaflet-zoom-hide");
+				
+	// global var(s) 
+	var colorHover;
+	var colorColor
+	var opacity = 1;
+	var countiesBounds = {};
+	var edBounds = {};
+	var stats = {};
+	var statsCo = {};
+	var COpopulation = [];
+	var tCO = {};
+	var pCO = {};
+	var iCO = {};
+	var year;
+	var stats_array_modal = [];
+                
+    function initializeMap(censusYear){
+            
+		stats = {};
+		statsCo = {};
+		COpopulation = [];	
+		stats_array_modal = [];		
+
+		year = censusYear;                  
+		var percentage = {}; // used to ddisplay chloropleth map            
+		var t = {};// total pop
+		var i = {};
+		var p = {};// polish pop
+		var o = {};// polish pop ----- not in use yet
+		tCO = {};
+		pCO = {};
+		iCO = {};
+				
+		d3.csv("population_csv.csv", function(error, census) {		
+		d3.csv("counties_population.csv", function(error, counties_population) {
+		
+			census.forEach(function(d){
+			
+				t[d.ED_ID_CSV] = [
+					{year : 1136073600000, pop : + d.T1_1AGETT_2006},// time stamp 2004 = 1104537600000
+					{year : 1293840000000, pop : + d.T1_1AGETT_2011},
+					{year : 1451606400000, pop : + d.T1_1AGETT_2016}
+				];
+				
+				p[d.ED_ID_CSV] = [
+					{year : 1136073600000, pop : + d.T2_1PLN_2006},// time stamp 2004 = 1104537600000
+					{year : 1293840000000, pop : + d.T2_1PLN_2011},
+					{year : 1451606400000, pop : + d.T2_1PLN_2016}
+				];
+				
+				i[d.ED_ID_CSV] = [
+					{year : 1136073600000, pop : + d.T2_1IEN_2006},// time stamp 2004 = 1104537600000
+					{year : 1293840000000, pop : + d.T2_1IEN_2011},
+					{year : 1451606400000, pop : + d.T2_1IEN_2016}
+				];				
+				
+			});
+			
+			counties_population.forEach(function(d){
+			
+				tCO[d.GEOGDESC] = [
+					{year : 1136073600000, pop : + d.T1_1AGETT_2006},// time stamp 2004 = 1104537600000
+					{year : 1293840000000, pop : + d.T1_1AGETT_2011},
+					{year : 1451606400000, pop : + d.T1_1AGETT_2016}
+				];
+				
+				pCO[d.GEOGDESC] = [
+					{year : 1136073600000, pop : + d.T2_1PLN_2006},// time stamp 2004 = 1104537600000
+					{year : 1293840000000, pop : + d.T2_1PLN_2011},
+					{year : 1451606400000, pop : + d.T2_1PLN_2016}
+				];
+				
+				iCO[d.GEOGDESC] = [
+					{year : 1136073600000, pop : + d.T2_1IEN_2006},// time stamp 2004 = 1104537600000
+					{year : 1293840000000, pop : + d.T2_1IEN_2011},
+					{year : 1451606400000, pop : + d.T2_1IEN_2016}
+				];				
+				
+			});
+                
+			if(year == "2006"){
+				
+				census.forEach(function(d){
+						
+						stats[d.ED_ID_CSV] = {
+							n : d.GEOGDESC,
+							tP : + d.T1_1AGETT_2006,
+							pP : + d.T2_1PLN_2006,
+							iP : + d.T2_1IEN_2006,
+							pPre : + d.PLN_PRE_2006,
+							county : d.COUNTY,
+						};						
+				});
+				counties_population.forEach(function(d){
+  						COpopulation.push({
+  							coID : d.GEOGDESC,
+  							populationCounty : + d.T2_1PLN_2006
+  						});
+						
+						statsCo[d.GEOGDESC] = {
+							tP : + d.T1_1AGETT_2006,
+							pP : + d.T2_1PLN_2006,
+							iP : + d.T2_1IEN_2006,
+							pPre : + d.PLN_PRE_2006,
+						};
+					
+  				});	
+			}
+                                
+			if(year == "2011"){
+				census.forEach(function(d){
+
+						stats[d.ED_ID_CSV] = {
+							n : d.GEOGDESC,
+							tP : + d.T1_1AGETT_2011,
+							pP : + d.T2_1PLN_2011,
+							iP : + d.T2_1IEN_2011,
+							pPre : + d.PLN_PRE_2011,
+							county : d.COUNTY,
+						};					
+				});
+				counties_population.forEach(function(d){
+						COpopulation.push({
+							coID : d.GEOGDESC,
+							populationCounty : + d.T2_1PLN_2011
+						});
+						
+						statsCo[d.GEOGDESC] = {
+							tP : + d.T1_1AGETT_2011,
+							pP : + d.T2_1PLN_2011,
+							iP : + d.T2_1IEN_2011,
+							pPre : + d.PLN_PRE_2011,
+						};
+				});	
+			}
+                                
+			if(year == "2016"){
+				census.forEach(function(d){                      
+						
+						stats[d.ED_ID_CSV] = {
+							n : d.GEOGDESC,
+							tP : + d.T1_1AGETT_2016,
+							pP : + d.T2_1PLN_2016,
+							iP : + d.T2_1IEN_2016,
+							pPre : + d.PLN_PRE_2016,
+							county : d.COUNTY,
+						};
+				});
+				counties_population.forEach(function(d){
+  						COpopulation.push({
+  							coID : d.GEOGDESC,
+  							populationCounty : + d.T2_1PLN_2016
+  						});
+						statsCo[d.GEOGDESC] = {
+							tP : + d.T1_1AGETT_2016,
+							pP : + d.T2_1PLN_2016,
+							iP : + d.T2_1IEN_2016,
+							pPre : + d.PLN_PRE_2016,
+						};
+
+				});		
+			}
+			
+			for (var key in stats) {								
+				var obj = stats[key];
+				obj.idED = key;
+				stats_array_modal.push(obj);
+			};
+			
+			createTable();
+            loadBoundaryData(percentage,counties_population,t,p,i);
+        });				
+		});
+	};
+    
+    
+     
+    function loadBoundaryData(percentage,counties_population,t,p,i){  
+	
+	var scatterChartType = "all";
+	
+	showScatterChart(scatterChartType);
+	createBarChart();
+	
+	
+      d3.json("EDs.json", function(collection) {
+	  
+         
+        collection = topojson.feature(collection, collection.objects.Electoral);
+		var edFeature = collection.features;
+		
+		for (key in edFeature) {
+			var b = d3.geo.bounds(edFeature[key]);
+			var idED = edFeature[key].id;		
+			edBounds[idED] = b;	
+		};
+		
+		
+		// var a = d3.geo.bounds(collection.features[0]);// bounds
+
+		
+  			  
+		  d3.select(".leaflet-zoom-hide")  // leaflet-zoom-hide
+			.selectAll("path")
+			.remove();
+
+  				
+		  var transform = d3.geo.transform({point: projectPoint}),
+			  path = d3.geo.path().projection(transform);
+  			  
+          var feature = g.selectAll("path")
+  			  .data(collection.features)
+  			  .enter().append("path")
+              .attr("class", function(d) { return 'f' + d.id;}) 
+              .attr("d", path)
+              .attr("fill", function(d){ return color( stats[d.id].pPre)})
+			  .attr('opacity', opacity)
+			  .on("mouseover", function(d){
+// Donut --------------------
+				
+				
+				var N = stats[d.id].n
+					tp = stats[d.id].tP,
+					pp = stats[d.id].pP,
+					ip = stats[d.id].iP,
+					other = stats[d.id].tP - (stats[d.id].pP + stats[d.id].iP),
+					ppPre = (pp / (pp + ip + other)) * 100,
+					ipPre = (ip / (pp + ip + other)) * 100,
+					otherPre = (other / (pp + ip + other)) * 100,
+					county = stats[d.id].county,
+					id = d.id;
+				
+				var T = t[d.id],
+					P = p[d.id],
+					I = i[d.id];
+				var O = [	{year : 1136073600000, pop : (T[0]["pop"] - (I[0]["pop"] + P[0]["pop"]))},// time stamp 2004 = 1104537600000
+							{year : 1293840000000, pop : (T[1]["pop"] - (I[1]["pop"] + P[1]["pop"]))},
+							{year : 1451606400000, pop : (T[2]["pop"] - (I[2]["pop"] + P[2]["pop"]))}
+						];
+											
+				var typeToolKit = "ed";
+				drawStats(N,tp,pp,ip,other,ppPre,ipPre,otherPre,county,T,P,I,O,id,typeToolKit);
+
+				
+			  })
+// donut Mouse out				
+              .on("mouseout", function(d){
+					var id = d.id,
+					county = stats[d.id].county;
+					
+					hideDrawStats(id,county);
+			  });
+                  
+  			//d3 code stolen from http://bost.ocks.org/mike/leaflet/#init
+  			  map.on("viewreset", reset);
+  			  reset();
+  			  function reset() {
+  				    var bounds = path.bounds(collection),
+  				    topLeft = bounds[0],
+  				    bottomRight = bounds[1];
+              
+  				    svg.attr("width", bottomRight[0] - topLeft[0])
+  				    .attr("height", bottomRight[1] - topLeft[1])
+  				    .style("left", topLeft[0] + "px")
+  				    .style("top", topLeft[1] + "px");
+              
+  				    g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+              
+  				    feature.attr("d", path);
+  			  }
+  			  function projectPoint(x, y) {
+    				var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+    				this.stream.point(point.x, point.y);
+  			  };
+  			
+                // jquery invisiblity to the layer displaying EDs
+              $(document).ready(function(){ 
+                      $('#ex1').slider({
+                        formatter: function(value) {
+						opacity = value // value is taken from DOM and is bounded here to global var in JS code -- opacity
+                        feature.attr('opacity', opacity) // opacity must be set as var somewhere on the top so if its value is changed it has to be applied to the layer with a new data also opacity must be specfied somewhere in the d3 features
+						}  
+                      });
+                });
+        		  
+        });
+   };
+  
+    d3.json("COUNTIES.json", function(error, counties) {
+           
+        var collection = topojson.feature(counties, counties.objects.COUNTIES_NAMES_);
+        var countiesBoundaries = [collection];
+            
+        var currentZoom = map.getZoom();
+        var strokeWidth = 2/parseInt(currentZoom);
+                     
+            
+        var geojson_Counties = L.geoJson(collection,{
+		
+				onEachFeature: function (feature, layer) {
+               
+					var cBounds = feature.properties.bounds_calculated=layer.getBounds();
+					var cName = feature.properties.County;
+					countiesBounds[cName] = cBounds;
+				
+                },
+				style : function(feature){
+				return {
+					  fillColor: "none",
+					  weight: strokeWidth,
+					  opacity: 1,
+					  color: 'black',  //Outline color
+					  fillOpacity: 0.7,
+					  className : feature.properties.County,		
+				};
+			}
+            }).addTo(map);
+					
+        overlays["Counties"] = geojson_Counties;
+                      
+        L.control.layers(baseLayers, overlays).addTo(map);
+            
+        map.on('zoomend', function () {
+                // dinamic change of stroke of Counties Boundaries
+                var currentZoom = map.getZoom(); // gets current zoom
+                var strokeWidth = 2/parseInt(currentZoom);
+                geojson_Counties.setStyle({weight: strokeWidth});
+            });
+			
+     
+	 
+    });    
+   
+	
+	function createBarChart(){
+	// Chart with Counties population  it not have to be here unless will be used in highlighting county's boundary
+
+// BAR                
+                            d3.select("#chartTotalPop")
+                                .selectAll("g.y.axis")
+                                .remove();
+
+                            d3.select("#chartTotalPop")
+                                .selectAll("g.x.axis")
+                                .remove();
+                
+                            d3.select("#chartTotalPop")
+                                .selectAll("rect")
+                                .remove();
+                                                      
+                            var check = "not sorted"
+                            function sortCounties(){
+                                COpopulation.sort(function(x,y){
+                                    return d3.ascending(x.populationCounty, y.populationCounty);
+                                });                                 
+                                check = "sorted"
+                            };                           
+                            sortCounties()
+                               
+                            // domain values are translated into pixels
+                            xCountyChart.domain(COpopulation.map(function(d) { return d.coID; }));
+                            yCountyChart.domain([0, d3.max(COpopulation, function(d) { return d.populationCounty; })]);
+
+                              chartTotalPop.append("g")
+                                  .attr("class", "x axis")
+                                  .attr("transform", "translate(0," + heightCountyChart + ")")
+                                  .call(xAxisCountyChart)
+                                .selectAll("text")
+                                  .style("text-anchor", "end")
+                                  .attr("dx", "-.45em")
+                                  .attr("dy", "-.05em")
+                                  .attr("transform", "rotate(-45)" );
+
+                              chartTotalPop.append("g")
+                                  .attr("class", "y axis")
+                                  .call(yAxisCountyChart)
+                                .append("text")
+                                  .attr("transform", "rotate(-90)")
+                                  .attr("y", 6)
+                                  .attr("dy", ".71em")
+                                  .style("text-anchor", "end")
+                                  .text("Population (No)");
+								
+								
+                              var barsChartTotalPop = chartTotalPop.attr("class","bars").selectAll("bar")
+                                  .data(COpopulation)
+                                .enter().append("rect")
+                                .attr("class",function(d){return "bar" + d.coID.toUpperCase()})
+                                .style("fill", function(d) {
+
+                                    if (0 < d.populationCounty && d.populationCounty <= 2000){
+                                        return "#ff9999"
+                                    } else if (2000 < d.populationCounty && d.populationCounty <= 6000) {
+                                         return "#ff6666"
+                                    } else if (6000 < d.populationCounty && d.populationCounty <= 10000){
+                                         return "#ff3333"
+                                    } else {
+                                         return "#ff0000"
+                                    }         
+
+                                 })
+
+                                .attr("x", function(d) { return xCountyChart(d.coID); })
+                                .attr("width", xCountyChart.rangeBand())
+                                .attr("y", function(d) { return yCountyChart(d.populationCounty); })
+                                .attr("height", function(d) { return heightCountyChart - yCountyChart(d.populationCounty); })
+								.on("click", function(d){									
+									var baundID = d.coID;
+									zoomToCounty(baundID);
+								})
+								.on("mouseover", function(d){								
+									var N = statsCo[d.coID].county
+										tp = statsCo[d.coID].tP,
+										pp = statsCo[d.coID].pP,
+										ip = statsCo[d.coID].iP,
+										other = statsCo[d.coID].tP - (statsCo[d.coID].pP + statsCo[d.coID].iP),
+										ppPre = (pp / (pp + ip + other)) * 100,
+										ipPre = (ip / (pp + ip + other)) * 100,
+										otherPre = (other / (pp + ip + other)) * 100,
+										county = d.coID,
+										id = d.coID;
+									
+									var T = tCO[d.coID],
+										P = pCO[d.coID],
+										I = iCO[d.coID];
+									var O = [	{year : 1136073600000, pop : (T[0]["pop"] - (I[0]["pop"] + P[0]["pop"]))},// time stamp 2004 = 1104537600000
+												{year : 1293840000000, pop : (T[1]["pop"] - (I[1]["pop"] + P[1]["pop"]))},
+												{year : 1451606400000, pop : (T[2]["pop"] - (I[2]["pop"] + P[2]["pop"]))}
+											];
+																
+									var typeToolKit = "county";
+																	
+									drawStats(N,tp,pp,ip,other,ppPre,ipPre,otherPre,county,T,P,I,O,id,typeToolKit);
+									
+									
+									
+								  })
+								  .on("mouseout", function(d) {
+									showScatterChart("all");
+									$(".bar" + county).css({'fill':colorColor,'stroke':'','stroke-width':''});
+								  });
+
+
+								  barsChartTotalPop.append("title")
+                                    .text(function(d) {
+                                    return d.coID + ": " + d.populationCounty.toLocaleString() + " (Click to zoom in)"
+                                });   
+	
+	
+	};
+	
+	function zoomToED(edID){
+
+		map.fitBounds([
+			[edBounds[edID][0][1], edBounds[edID][0][0]],
+			[edBounds[edID][1][1], edBounds[edID][1][0]]		
+		]).setZoom(12);
+					
+	};
+	
+	 function zoomToCounty(baundID){
+		map.fitBounds(countiesBounds[baundID]);
+		
+		d3.select("." + baundID).transition()
+			.duration(1500)
+			.style("fill", '#ffd700')
+			.transition()
+			.duration(1500)
+			.style("fill", "none");	
+				
+	};
+	
+	function zoomHome(){
+		map.setView([53.203936, -6.785920],6);
+		var scatterChartType = "all";
+		showScatterChart(scatterChartType);
+	};
+	function showScatterChart(scatterChartType){
+	
+	// Scatter Plot for ED(s)
+							var name;
+							var stats_array = [];
+							if (scatterChartType == "all"){
+								name = " ";
+								for (var key in stats) {
+									
+									var obj = stats[key];
+										obj["ID"] = key;
+										stats_array.push(obj);
+								};
+							}else {
+								var a = scatterChartType;
+								name = scatterChartType + " -";
+								for (var key in stats) {
+									
+									var obj = stats[key];
+										if (obj.county == scatterChartType.toUpperCase()){																														
+											obj["ID"] = key;
+											stats_array.push(obj);										
+										};
+								};								
+							};
+
+							
+							d3.select("#chartScatterED")
+								.selectAll(".SCgraph")
+								.remove();
+							
+							var margin = {top: 5, right: 20, bottom: 30, left: 40},
+								widthSP = 550 - margin.left - margin.right, // 500
+								heightSP = 205 - margin.top - margin.bottom; // 200
+
+							var xValue = function(d) { return d.tP;}, //total pop   from exm Calories
+								xScale = d3.scale.linear().range([0, widthSP]), // value -> display
+								xMap = function(d) { return xScale(xValue(d));}, // data -> display
+								xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+
+							// setup y
+							var yValue = function(d) { return d.pPre;}, // Protein (g)
+								yScale = d3.scale.linear().range([heightSP, 0]), // value -> display
+								yMap = function(d) { return yScale(yValue(d));}, // data -> display
+								yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+							var cValue = function(d) { return d.pPre;};
+
+								 
+							// add the graph canvas to the body of the webpage
+							var chartScatterED = d3.select("#chartScatterED")
+								.append("svg")
+								.attr("class", "SCgraph")
+								.attr("width", widthSP + margin.left + margin.right)
+								.attr("height", heightSP + margin.top + margin.bottom)
+								.append("g")								
+								.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+							// add the tooltip area to the webpage
+							var tooltipSC = d3.select("body").append("div")
+								.attr("class", "tooltipSC")
+								.style("opacity", 0);
+
+							  // don't want dots overlapping axis, so add in buffer to data domain
+							  xScale.domain([0, d3.max(stats_array, xValue)+1]);
+							  yScale.domain([0, d3.max(stats_array, yValue)+1]);
+
+							  // x-axis
+							  chartScatterED.append("g")
+								  .attr("class", "x axis")
+								  .attr("transform", "translate(0," + heightSP + ")")
+								  .call(xAxis)
+								.append("text")
+								  .attr("class", "label")
+								  .attr("x", widthSP)
+								  .attr("y", -6)
+								  .style("text-anchor", "end")
+								  .style("font", "10px sans-serif")
+								  .text("ED(s) Total Pop");
+
+							  // y-axis
+							  chartScatterED.append("g")
+								  .attr("class", "y axis")
+								  .call(yAxis)
+								.append("text")
+								  .attr("class", "label")
+								  //.attr("transform", "rotate(-90)")
+								  .attr("y", 0)
+								  .attr("x",164)
+								  .attr("dy", ".71em")
+								  .style("font", "10px sans-serif")
+								  .style("text-anchor", "end")
+								  .text(name + " Polish Pop (%) " );
+
+							  // draw dots
+							  chartScatterED.append("g").attr("class","kropki").selectAll(".dot")
+								  .data(stats_array)
+								.enter().append("circle")
+								  .attr("class", function(d) { return 'c'+ d.ID;})
+								  .attr("r", 3.5)
+								  .attr("cx", xMap)
+								  .attr("cy", yMap)
+								  .style("fill", function(d) { return color(cValue(d));})
+								  .style({"stroke":"#737373", "stroke-width":"0.5px"})
+								  .on("mouseover", function(d) {
+									  tooltipSC.transition()
+										   .duration(200)
+										   .style("opacity", .9);
+									  tooltipSC.html('<b>'+d.n + '</b><br/>Total Pop: ' + d.tP 
+										+ "<br>Polish Pop: " + d.pPre + " %")
+										   .style("left", (d3.event.pageX + 5) + "px")
+										   .style("top", (d3.event.pageY - 28) + "px");
+										
+										colorHover = $('.f' + d.ID).css("fill")
+										$('.c' + d.ID).css({'fill':'#ffd700'});
+										$('.f' + d.ID).css({'fill':'#ffd700','stroke':'black','stroke-width':2});
+										   										
+								  })
+								  .on("click", function(d) { 
+										var edID = d.ID;
+										zoomToED(edID);										
+								  })
+								  .on("mouseout", function(d) {
+									  tooltipSC.transition()
+										   .duration(500)
+										   .style("opacity", 0);
+										$('.f' + d.ID).css({'fill':colorHover,'stroke':'','stroke-width':''});
+										$('.c' + d.ID).css({'fill':colorHover});
+										
+								  });
+	
+	};
+	
+	function drawStats(N,tp,pp,ip,other,ppPre,ipPre,otherPre,county,T,P,I,O,id,typeToolKit){
+	
+
+				
+				if(typeToolKit == "county"){
+					countyHeading(N,county,tp,ip,pp,other,id);
+				}else{
+					edHeading(N,county,tp,ip,pp,other,id);
+				}
+						
+				d3.select("#tooltip")
+					.selectAll(".EdDonut")
+					.remove();
+
+				d3.select("#tooltip-line")
+					.selectAll(".edLineChart")
+					.remove();
+					
+				var donutData = [pp, ip,other]
+				var width = 160,
+					height = 160,
+					radius = (height)/2;
+					
+				var colorDonut =["#FF4136","#2ECC40", "#bfbfbf"];
+				
+				var arc = d3.svg.arc()
+					.outerRadius(radius - 35)
+					.innerRadius(radius - 70);
+
+				var pie = d3.layout.pie()
+					.value(function(d) {return d;})
+					.sort(null);					
+								
+				var donut = d3.select("#tooltip")
+					.append("svg")
+					.attr("class", "EdDonut")
+					.attr("width",width)
+					.attr("height", height);
+				
+				var groupDonut = donut.append("g");
+				
+				var arcs = groupDonut.selectAll(".arc")
+					.data(pie(donutData)) 
+					.enter()
+					.append("g")
+					.attr("transform", "translate(" + width / 2 + "," + height / 3 + ")")
+					.attr("class", "arc");
+
+				arcs.append("path")
+					.attr("d", arc)
+					.style("fill", function(d,i){return colorDonut[i]})
+					.style("stroke", "#ffece5");
+
+				var legendRectSize= radius * 0.1;
+				var legendSpacing = radius * 0.05;
+
+				var legend = donut.selectAll(".legend")
+					.data(colorDonut)
+					.enter()
+					.append("g")
+					.attr("class", "legend")
+					.attr("transform", function(d,i){
+						var heightRec = legendRectSize + legendSpacing;
+						var offset = heightRec * colorDonut.length /2;
+						var horz =  legendRectSize - 5 ;
+						var vert = (width - 30) + (i *heightRec - offset);
+						return "translate(" + horz + "," + vert + ")";				
+					});
+
+				legend.append("rect")
+					.attr("width", legendRectSize)
+					.attr("height", legendRectSize)
+					.style("fill", function(d,i){return colorDonut[i]})
+					.style("stroke", function(d,i){return colorDonut[i]});
+
+
+				legend.append("text")
+					.attr("x", legendRectSize + legendSpacing)
+					.attr("y", legendRectSize - legendSpacing)
+					.attr("dy", ".35em")
+					.style("fill", "#4d4d4d")
+					.text(function(d){ 
+						if(d == "#FF4136"){return "Polish " + ppPre.toFixed(2) + "%"}
+						if(d == "#2ECC40"){return "Irish " + ipPre.toFixed(2) + "%"}
+						if(d == "#bfbfbf"){return "Other " + otherPre.toFixed(2) + "%"}
+					})
+					.style("font-size", "0.7em");
+// Line Chart					
+				var edLineChart = d3.select("#tooltip-line")
+					.append("svg")
+					.attr("class", "edLineChart")
+					.attr("width", "220")
+					.attr("height", "160")
+				
+				var margin = {top: 20, right: 20, bottom: 30, left: 55},
+					widthChart = +edLineChart.attr("width") - margin.left - margin.right,
+					heightChart = +edLineChart.attr("height") - margin.top - margin.bottom,
+					g = edLineChart.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				
+				var parseDate = d3.time.format("%Y").parse;
+
+				var x = d3.time.scale()  // d3.scaleTime()
+					.range([0, widthChart]);
+
+				var y = d3.scale.linear()
+					.range([heightChart, 0]);
+
+				var xAxis = d3.svg.axis()
+					.scale(x)
+					.orient("bottom")
+					.ticks(4);
+
+				var yAxis = d3.svg.axis()
+					.scale(y)
+					.orient("left");
+
+				var line = d3.svg.line()
+					.x(function(d) { return x(d.year); })
+					.y(function(d) { return y(d.pop); });
+					//.interpolate("basis"); // ,makes curves
+					
+				//x.domain(d3.extent(stat2, function(d) { return d.year; }));
+				x.domain([1104537600000, d3.max(T, function(d) { return d.year; })]);
+				y.domain([0,d3.max(T, function(d) { return d.pop; })]);	
+					
+				g.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + heightChart + ")")
+					.call(xAxis)
+					.selectAll("text")
+					.style("text-anchor", "end")
+					.attr("dx", "-.8em")
+					.attr("dy", ".15em")
+					.attr("transform", "rotate(-45)" );
+				
+				g.append("g")
+					.attr("class", "y axis")
+					.call(yAxis)
+					.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", 3)
+					.attr("dy", ".71em")
+					.style("text-anchor", "end")
+					.text("Population");
+
+					
+				g.append("path")
+					.datum(T)
+					.attr("class", "line")
+					.attr("d", line)
+					.style({"stroke":"blue", "stroke-width":"2.5px", "fill":"none"});
+					
+				g.append("path")
+					.datum(I)
+					.attr("class", "line")
+					.attr("d", line)
+					.style({"stroke":"#2ECC40", "stroke-width":"2.5px", "fill":"none"});					
+
+				g.append("path")
+					.datum(P)
+					.attr("class", "line")
+					.attr("d", line)
+					.style({"stroke":"#FF4136", "stroke-width":"2.5px", "fill":"none"});
+
+				g.append("path")
+					.datum(O)
+					.attr("class", "line")
+					.attr("d", line)
+					.style({"stroke":"#bfbfbf", "stroke-width":"2.5px", "fill":"none"});
+
+				colorHover = $('.f' + id).css("fill");
+				
+				
+				colorColor = $(".bar" + county).css('fill');			
+				$(".bar" + county).css({'fill':'#ffd700','stroke':'black','stroke-width':1});
+				
+				$('.f' + id).css({'fill':'#ffd700','stroke':'black','stroke-width':2});
+				
+				d3.select("#container").classed("hidden", false);
+				
+				$('.c' + id).css({'fill':'#ffd700', 'visibility':'visible'});
+	
+	};
+	function hideDrawStats(id,county){
+		d3.select("#container").classed("hidden", true);	
+					$(".kropki").css({'visibility':'visible'});					
+					$('.c' + id).css({'fill': colorHover, 'visibility':''});
+					$('.f' + id).css({'fill':colorHover,'stroke':'','stroke-width':''});
+					$(".bar" + county).css({'fill':colorColor,'stroke':'','stroke-width':''});
+					
+	};
+	
+	function countyHeading(N,county,tp,ip,pp,other,id){
+				d3.select("#tooltip")				
+					.select("#value1")
+					.html("<b>" + "Year: " + "</b>" + year  + "<br>" +  "<b>" + "County: " + "</b>" + id + "<br><br>"+ "<br>"); 
+						
+				d3.select("#tooltip-line")					
+					.select("#value2")
+					.html("<b>" +"Total population: "+ "</b>" + tp.toLocaleString() + "<br>" + "<b>" + "Irish Population: "+ "</b>" + ip.toLocaleString() + "</br><b>" + "Polish Population: " + "</b>" + pp.toLocaleString() +"<br>"  +"<b>" +"Other Nationalities: "+ "</b>" + other.toLocaleString());
+								
+				showScatterChart(id);
+	};
+	
+	function edHeading(N,county,tp,ip,pp,other,id){
+				d3.select("#tooltip")				
+					.select("#value1")
+					.html("<b>" + "Year: " + "</b>" + year  + "<br><b>" + "ED Name: " + "</b>"+ N + "<br>" +  "<b>" + "County: " + "</b>" + county + "<br>"+ "<br>"); 
+						
+				d3.select("#tooltip-line")					
+					.select("#value2")
+					.html("<b>" +"Total population: "+ "</b>" + tp.toLocaleString() + "<br>" + "<b>" + "Irish Population: "+ "</b>" + ip.toLocaleString() + "</br><b>" + "Polish Population: " + "</b>" + pp.toLocaleString() +"<br>"  +"<b>" +"Other Nationalities: "+ "</b>" + other.toLocaleString());
+				
+				$(".kropki").css({'visibility':'hidden'});
+	};
+	
+	    function createTable(){
+		
+			d3.select("#modalTableHeader")
+				.html("Year: " + year + "      Population information from Census ");
+		
+			$('#modalTableInfo').empty();
+		
+			$(document).ready( function () {
+				var table = $('#modalTableInfo').DataTable( {
+					destroy: true,
+					//select: 'single',
+					data: stats_array_modal,
+					columns: [
+						{data: 'county',"title": "County"},
+						{data: 'idED',"title": "ED ID"},
+						{data: 'n', "title": "Name"},
+						{data: 'iP', "title": "Irish Pop"},		
+						{data: 'pP', "title": "Polish Pop"},
+						{data: 'pPre', "title": "Polish %"},
+						{data: 'tP', "title": "Total Pop"},
+					]
+				});
+				
+				$('#modalTableInfo tbody').on('click', 'tr', function (e) {
+					
+					var rowData = table.row( this ).data();
+					var idED = rowData.idED;
+					zoomToED(idED);
+					
+
+					
+					//console.log(rowData.idED); //gives only id
+					// console.log(rowData); // gives data for whole row
+					
+
+				
+				});			
+				
+			// https://datatables.net/reference/type/row-selector
+			
+			});
+			
+			// https://datatables.net/examples/server_side/select_rows.html
+			
+			
+
+			};
+	
+	
+	
+			
+			
+		
+	
+	
+   initializeMap("2006");
+   
+
+   
+
+	
+	</script> 
