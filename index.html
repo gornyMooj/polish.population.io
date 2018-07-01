@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>28</title>
+  <title>31</title>
 
   
   <meta charset="utf-8" />
@@ -26,6 +26,11 @@
 	<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
 
 	<style>
+	
+	.leaflet-bottom .leaflet-control {
+		margin-bottom: 0;
+	}
+	
     #wraper{
       text-align: center;
       display:inline-block;
@@ -67,9 +72,10 @@
 		font-family: sans-serif;
 		position:absolute;
 		z-index:800;
-		bottom: 0;
+		bottom: 16px;
 		right:0;
-		background:none;		
+		background: rgba(255,255,255);
+		border: 1px solid black;		
 	}
 	#menuBar{
 		height:31px;
@@ -135,8 +141,8 @@
 		box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 		pointer-events: none;
 		
-		bottom: 246px;
-		right: 6px;	
+		bottom: 266px;
+		right: 15px;	
 	}
 			
 	#container.hidden {
@@ -184,11 +190,11 @@
 		margin: 0px 14px 0px 20px;
 	}
 	.modal-header, .modal-footer {
-	  background-color: #009b48;
+	  background-color: black;
 	  color: white;
 	}
 	.modal-footer {
-	  background-color: #ff7900;
+	  background-color: black;
 	  color: white;
 	}
 
@@ -198,6 +204,23 @@
 	}
 	#chartTotalPop{
 		background:white;
+	}
+	
+	
+	#legend {
+		position: absolute;
+		bottom: 16px;
+		left: 16px;
+		
+		height: 200px;
+		width: 200px;
+		
+		background: rgba(255,255,255);
+
+		z-index:800;
+		
+		border: 1px solid black;
+		
 	}
   
 	</style>
@@ -212,7 +235,7 @@
 				<h3>
 					<img src="irelandFlag.png"  width="25" height="25" align="left" style = "margin-left: 5px">
 					<img src="polandFlag.png"  width="25" height="25" align="left" style = "margin-right: 10px"> 
-					Polish Population
+					Polish Population in Ireland
 				</h3>
         </div>
 	</div>
@@ -255,7 +278,10 @@
 			</div>
 		</div>
 	  
-	  
+
+		<div id = "legend"></div>
+
+		
 		<!-- Modal -->
 		<div class="modal fade" id="modalTable" tabindex="-1" role="dialog" aria-labelledby="modalTableLabel">
 		  <div class="modal-dialog" role="document">
@@ -283,7 +309,8 @@
 		//https://gist.github.com/zross/11186669	kildare_2016.json
          
         // ----------- total -- Population - Counties --------------------
-
+		var colorPre = [0,2.5,5,10,15,20,25];
+		var colorPreRange = ["white","#ffe6e6","#ff9999","#ff8080","#ff6666","#ff4d4d","#ff0000","#660000"];
         var widthCountyChartSVG = 600,
 			heightCountyChartSVG = 205;
         var marginCountyChart = {top: 5, right: 10, bottom: 48, left: 50};
@@ -308,10 +335,10 @@
                   "translate(" + marginCountyChart.left + "," + marginCountyChart.top + ")");
 		
 		/* ------------------------ MAP ---------------------------------------------- */     
-         
+   	
     var color = d3.scale.linear()
-      .domain([0,5,10,15,20,26])
-      .range(["white","#ffe6e6","#ff9999","#ff8080","#ff6666","#ff4d4d","#ff0000","#660000"]);
+      .domain(colorPre)
+      .range(colorPreRange);
          
          
 	  // creates map with the basemap
@@ -434,7 +461,8 @@
 				counties_population.forEach(function(d){
   						COpopulation.push({
   							coID : d.GEOGDESC,
-  							populationCounty : + d.T2_1PLN_2006
+  							populationCounty : + d.T2_1PLN_2006,
+							pPre: + d.PLN_PRE_2006
   						});
 						
 						statsCo[d.GEOGDESC] = {
@@ -462,7 +490,8 @@
 				counties_population.forEach(function(d){
 						COpopulation.push({
 							coID : d.GEOGDESC,
-							populationCounty : + d.T2_1PLN_2011
+							populationCounty : + d.T2_1PLN_2011,
+							pPre: + d.PLN_PRE_2011
 						});
 						
 						statsCo[d.GEOGDESC] = {
@@ -489,7 +518,8 @@
 				counties_population.forEach(function(d){
   						COpopulation.push({
   							coID : d.GEOGDESC,
-  							populationCounty : + d.T2_1PLN_2016
+  							populationCounty : + d.T2_1PLN_2016,
+							pPre: + d.PLN_PRE_2006
   						});
 						statsCo[d.GEOGDESC] = {
 							tP : + d.T1_1AGETT_2016,
@@ -513,6 +543,25 @@
 		});
 	};
     
+	function setColor(percentage){
+		if(percentage == 0){
+			return "white"
+		}else if(percentage > 0 &&  percentage < 2.5){
+			return "#ffe6e6"
+		}else if(percentage >= 2.5 &&  percentage < 5){
+			return "#ff9999"
+		}else if(percentage >= 5 &&  percentage < 10){
+			return "#ff8080"
+		}else if(percentage >= 10 &&  percentage < 15){
+			return "#ff6666"
+		}else if(percentage >= 15 &&  percentage < 20){
+			return "#ff4d4d"
+		}else if(percentage >= 20 &&  percentage < 25){
+			return "#ff0000"
+		}else{
+			return "#660000"
+		};
+	};
     
      
     function loadBoundaryData(percentage,counties_population,t,p,i){  
@@ -553,7 +602,7 @@
   			  .enter().append("path")
               .attr("class", function(d) { return 'f' + d.id;}) 
               .attr("d", path)
-              .attr("fill", function(d){ return color( stats[d.id].pPre)})
+              .attr("fill", function(d){ return setColor(stats[d.id].pPre);})
 			  .attr('opacity', opacity)
 			  .on("mouseover", function(d){
 // Donut --------------------
@@ -719,15 +768,13 @@
                                   .attr("y", 6)
                                   .attr("dy", ".71em")
                                   .style("text-anchor", "end")
-                                  .text("Population (No)");
-								
-								
+                                  .text("Polish Population [Number]");
+							
                               var barsChartTotalPop = chartTotalPop.attr("class","bars").selectAll("bar")
                                   .data(COpopulation)
                                 .enter().append("rect")
                                 .attr("class",function(d){return "bar" + d.coID.toUpperCase()})
                                 .style("fill", function(d) {
-
                                     if (0 < d.populationCounty && d.populationCounty <= 2000){
                                         return "#ff9999"
                                     } else if (2000 < d.populationCounty && d.populationCounty <= 6000) {
@@ -907,7 +954,7 @@
 								  .attr("dy", ".71em")
 								  .style("font", "10px sans-serif")
 								  .style("text-anchor", "end")
-								  .text(name + " Polish Pop (%) " );
+								  .text(name + " Polish Pop [%] " );
 
 							  // draw dots
 							  chartScatterED.append("g").attr("class","kropki").selectAll(".dot")
@@ -917,7 +964,7 @@
 								  .attr("r", 3.5)
 								  .attr("cx", xMap)
 								  .attr("cy", yMap)
-								  .style("fill", function(d) { return color(cValue(d));})
+								  .style("fill", function(d) { return setColor(cValue(d));})
 								  .style({"stroke":"#737373", "stroke-width":"0.5px"})
 								  .on("mouseover", function(d) {
 									  tooltipSC.transition()
@@ -1164,56 +1211,109 @@
 				$(".kropki").css({'visibility':'hidden'});
 	};
 	
-	    function createTable(){
+	function createTable(){
 		
-			d3.select("#modalTableHeader")
-				.html("Year: " + year + "      Population information from Census ");
+		d3.select("#modalTableHeader")
+			.html("Year: " + year + "      Population information from Census ");
 		
-			$('#modalTableInfo').empty();
+		$('#modalTableInfo').empty();
 		
-			$(document).ready( function () {
-				var table = $('#modalTableInfo').DataTable( {
-					destroy: true,
-					//select: 'single',
-					data: stats_array_modal,
-					columns: [
-						{data: 'county',"title": "County"},
-						{data: 'idED',"title": "ED ID"},
-						{data: 'n', "title": "Name"},
-						{data: 'iP', "title": "Irish Pop"},		
-						{data: 'pP', "title": "Polish Pop"},
-						{data: 'pPre', "title": "Polish %"},
-						{data: 'tP', "title": "Total Pop"},
-					]
-				});
-				
-				$('#modalTableInfo tbody').on('click', 'tr', function (e) {
-					
-					var rowData = table.row( this ).data();
-					var idED = rowData.idED;
-					zoomToED(idED);
-
-					
-
-				
-				});			
-				
-
-			
+		$(document).ready( function () {
+			var table = $('#modalTableInfo').DataTable( {
+				destroy: true,
+				//select: 'single',
+				data: stats_array_modal,
+				columns: [
+					{data: 'county',"title": "County"},
+					{data: 'idED',"title": "ED ID"},
+					{data: 'n', "title": "Name"},
+					{data: 'iP', "title": "Irish Pop"},		
+					{data: 'pP', "title": "Polish Pop"},
+					{data: 'pPre', "title": "Polish %"},
+					{data: 'tP', "title": "Total Pop"},
+				]
 			});
+				
+			$('#modalTableInfo tbody').on('click', 'tr', function (e) {					
+				var rowData = table.row( this ).data();
+				var idED = rowData.idED;
+				zoomToED(idED);				
+			});						
+		});
+	};
+		
+	function legend(){
+		var currentHeight = $('#legend').outerHeight();
+		var currentWidth = $('#legend').outerWidth();
+		
+		colorPreRange = ["white","#ffe6e6","#ff9999","#ff8080","#ff6666","#ff4d4d","#ff0000","#660000"];
+		
+		var legendMap = d3.select("#legend")
+					.append("svg")
+					.attr("class", "legendMap")
+					.attr("width", currentWidth)
+					.attr("height", currentHeight)
+					
+		var margin = {top: 0, right: 20, bottom: 20, left: 20},
+					width = +legendMap.attr("width") - margin.left - margin.right,
+					height = +legendMap.attr("height") - margin.top - margin.bottom,
+					g = legendMap.append("g").attr("class","mapContainer").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+					
+		var marginTop = height;
+		var rectSize= marginTop * 0.04;
+		var rectSpacing = marginTop * 0.07;
+		
+		g.selectAll(".lCircles")
+			.data(colorPreRange)
+			.enter()
+			.append("g")
+			.attr("class", "lCircles")
+			.attr("transform", function(d,i){
+				var heightRec = rectSize + rectSpacing;
+				var offset = heightRec * colorPreRange.length /2;
+				var horz =  rectSize - 5 ;
+				var vert = (width - 50) + (i *heightRec - offset);
+				
+				console.log(vert);
+				
+				return "translate(" + horz + "," + vert + ")";				
+			})
 			
+		legendMap.selectAll(".lCircles")
+		.append("circle")
+			.attr("cx", rectSize)
+			.attr("cx", rectSize)
+			.attr("r", rectSize)
+			.style("fill", function(d,i){return colorPreRange[i]})
+			.style({"stroke":"#737373", "stroke-width":"0.5px"})
+					
+		legendMap.selectAll(".lCircles")
+			.append("text")
+			.attr("x", rectSize + rectSpacing)
+			.attr("y", rectSize - rectSpacing + 6)
+			.attr("dy", ".4em")
+			.style("fill", "black")
+			.text(function(d,i){ 
+				if(d == "white"){return "0 %"}
+				if(d == "#ffe6e6"){return " 0 < 2.5 %"}
+				if(d == "#ff9999"){return "2.5-5 %"}
+				if(d == "#ff8080"){return "5-10 %"}
+				if(d == "#ff6666"){return "10-15 %"}
+				if(d == "#ff4d4d"){return "15-20 %"}
+				if(d == "#ff0000"){return "20-25 %"}
+				if(d == "#660000"){return "25 > %"}
 
-			
-			
-
-			};
-	
-	
-	
-			
-			
+			})
+			.style("font-size", "0.7em");
+		
 		
 	
+	
+	
+	
+	};	
+	
+	legend();
 	
    initializeMap("2006");
    
