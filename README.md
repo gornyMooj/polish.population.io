@@ -18,6 +18,7 @@ Below are listed all tools used in the building of this web application:
 - Bootstrap 3
 - DataTables a plug in for the jQuery
 - TopoJSON
+- GDAL
 - QGIS
 - MS Office
 - Python 2.7 (OpenPyXL library)
