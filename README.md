@@ -12,5 +12,14 @@ The data was reviewed and cleaned in QGIS, all unecessery columns were removed f
 ### Technology and tools
 The charts and maps were build using [D3.js](https://d3js.org/) and [leaflet.js](https://leafletjs.com/). With D3.js are handled the legend, charts, tabular data and Electoral Division dataset, where leaflet is used for the counties dataset and the basemaps.</b>
 Below are listed all tools used in the building of this web application:
+- D3.js V3
+- leaflet.js V0.7
+- jQuery
+- Bootstrap 3
+- DataTables a plug in for the jQuery
+- TopoJSON
+- QGIS
 - MS Office
-- 
+- Python 2.7 (OpenPyXL library)
+
+
