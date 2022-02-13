@@ -24,3 +24,8 @@ Below are listed all tools used in the building of this web application:
 - Python 2.7 (OpenPyXL library)
 
 
+#### Glossary:
+
+- T2_1PLN  -- Poland - Nationality
+- T2_1PLBP -- Poland - Birthplace
+- T2_1IEN  -- Ireland - Nationality
